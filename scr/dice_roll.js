@@ -29,7 +29,6 @@ class DiceRoll {
         this.dice_roll_args[1]
       );
       const match = DiceRollPattern.exec(source);
-			console.log(match);
       max = match[2];
       rolls = match[1];
 			if (max == 0) max = 100;
