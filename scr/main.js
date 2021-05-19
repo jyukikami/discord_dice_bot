@@ -16,16 +16,31 @@ client.on("message", (message) => {
     message.reply("呼ぶんじゃねぇよ");
     return;
   }
-	// ロールコマンド
+  // ロールコマンド
   if (message.content.startsWith("/r ")) {
     const text = message.content.replace(/^\/r /, "");
-		let dice = new DiceRoll();
-    const roll_result = dice.text_roll(text);
-		if (roll_result == 0) {
-			message.channel.send(`error コマンドが正しくありません in: ${text}`);
-			return;
-		}
-    message.reply(`${roll_result} [${dice.result_rolls.join("+")}]  ||log:${text}||`);
+    let words = text.split(/( |　)/);
+    let roll_text = words[0];
+    // 数値なら
+    if (!isNaN(roll_text)) {
+      roll_text = "1D" + roll_text;
+    }
+    let option = "";
+    // オプションがあるなら
+    if (words.length == 3) {
+      option = words[2];
+    }
+    let dice = new DiceRoll();
+    const roll_result = dice.text_roll(roll_text, option);
+    if (roll_result == 0) {
+      message.channel.send(`error コマンドが正しくありません in: ${text}`);
+      return;
+    }
+    const rolls =
+      dice.result_rolls.length > 1 ? `[${dice.result_rolls.join("+")}]` : "";
+    message.reply(
+      `${roll_result} ${dice.result_message}${rolls}  ||log:${text}||`
+    );
     return;
   }
 });
