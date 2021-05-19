@@ -1,6 +1,7 @@
 class DiceRoll {
 	constructor(){
 		this.log_roll = [];
+    this.result_message = ""
 }
 
 	get result_rolls(){
